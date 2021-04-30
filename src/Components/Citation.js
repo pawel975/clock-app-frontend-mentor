@@ -1,7 +1,9 @@
 // packages
+import { useContext } from 'react';
 import styled from 'styled-components';
 // img, svg
 import RefreshCitation from '../assets/desktop/icon-refresh.svg';
+import { ClockContext } from './ClockContext';
 
 const CitationWrapper = styled.div`
 
@@ -37,9 +39,12 @@ const CitationWrapper = styled.div`
 `
 
 const Citation = () => {
+
+    const [state, setState] = useContext(ClockContext);
+
     return(
         <CitationWrapper>
-          <p className="citation-text">“The science of operations, as derived from mathematics more especially, is a science of itself, and has its own abstract truth and value.”</p>
+          <p className="citation-text">“{state.quote}”</p>
           <h4 className="citation-author">Ada Lovelace</h4>
         </CitationWrapper>
     )

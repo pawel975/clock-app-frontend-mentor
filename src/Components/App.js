@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 // packages
 import styled from 'styled-components';
+// import axios from 'axios';
 // components
 import Citation from './Citation';
 import Hour from './Hour';
@@ -8,6 +9,7 @@ import Details from './Details';
 // img, svg
 import BackgroundMobileDayTime from '../assets/mobile/bg-image-daytime.jpg';
 import ArrowUpMobile from '../assets/mobile/icon-arrow-up-mobile.svg';
+import { ClockProvider } from './ClockContext';
 
 
 const AppWrapper = styled.div`
@@ -77,16 +79,17 @@ function App() {
     setDetailsOpen(!detailsOpen);
   }
 
-
   return (
-    <AppWrapper>
-      <div className="app">
-        {!detailsOpen && <Citation/>}
-        <Hour/>
-        <button onClick={handleDetailOpen}>{detailsOpen?"LESS":"MORE"}</button>
-        {detailsOpen && <Details/>}
-      </div>
-    </AppWrapper>
+    <ClockProvider>
+      <AppWrapper>
+        <div className="app">
+          {!detailsOpen && <Citation/>}
+          <Hour/>
+          <button onClick={handleDetailOpen}>{detailsOpen?"LESS":"MORE"}</button>
+          {detailsOpen && <Details/>}
+        </div>
+      </AppWrapper>
+    </ClockProvider>
   );
 }
 

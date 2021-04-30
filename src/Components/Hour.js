@@ -1,7 +1,9 @@
+import React, {useContext, useEffect, useState} from 'react';
 // packages
 import styled from 'styled-components';
 // img, svg
 import Sun from '../assets/desktop/icon-sun.svg';
+import { ClockContext } from './ClockContext';
 
 const HourWrapper = styled.div`
 * {
@@ -73,12 +75,16 @@ grid-template-areas:
 `
 
 const Hour = () => {
+
+
+    const [state, setState] = useContext(ClockContext);
+
     return(
         <HourWrapper>
             <h3 className="greet-text">GOOD MORNING</h3>
-            <span className="time">11:37</span>
+            <span className="time"></span>
             <h3 className="bst">BST</h3>
-            <h3 className="city">IN LONDON, UK</h3>
+            <h3 className="city">IN {state.country}, {state.countryCode}</h3>
         </HourWrapper>
     )
 }
