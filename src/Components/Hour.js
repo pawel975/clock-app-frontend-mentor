@@ -92,17 +92,20 @@ const Hour = () => {
             minute:minute,
         })
 
-        if (6<hour && hour<20) {
-            setState({
-                ...state,
-                isNight: false,
-            })
-        }
-    }
+        // if (6<hour && hour<20) {
+        //     setState({
+        //         ...state,
+        //         isNight: false,
+        //     })
+        // } else {
+        //     setState({
+        //         ...state,
+        //         isNight:true,
+        //     })
+        // }
 
-    // const changeTimeOfDay = () => {
-    //     if()
-    // }
+        console.log(state)
+    }
 
     useEffect(() => {
         setInterval(changeTime,1000)

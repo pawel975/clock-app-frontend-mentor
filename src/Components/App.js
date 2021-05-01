@@ -18,8 +18,6 @@ const AppWrapper = styled.div`
 position:relative;
 width:100vw;
 height:100vh;
-/* background:url(${BackgroundMobileNightTime}); */
-background-size:cover;
 
 &:after {
   position:absolute;
@@ -111,10 +109,17 @@ function App() {
 
   useEffect(() => {
     fetchData()
+    console.log(state)
   }, [state.randomCitation])
 
+
+  const backgroundStyling = {
+    background: `url(${state.isNight? BackgroundMobileNightTime: BackgroundMobileDayTime})`,
+    backgroundSize:"cover",
+  }
+
   return (
-      <AppWrapper style={{background: `url(${state.isNight? BackgroundMobileNightTime: BackgroundMobileDayTime})`}}>
+      <AppWrapper style={backgroundStyling}>
         <div className="app">
           {!detailsOpen && <Citation/>}
           <Hour/>

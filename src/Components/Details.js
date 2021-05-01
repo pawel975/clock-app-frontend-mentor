@@ -1,7 +1,8 @@
 // packages
+import { useContext } from 'react';
 import styled from 'styled-components';
+import { ClockContext } from './ClockContext';
 // img, svg
-
 
 const DetailsWrapper = styled.div`
 
@@ -38,6 +39,10 @@ section {
 `
 
 const Details = () => {
+
+    const [state, setState] = useContext(ClockContext);
+
+
     return(
         <DetailsWrapper>
             <section>

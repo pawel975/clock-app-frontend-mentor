@@ -41,7 +41,6 @@ const Citation = () => {
     const [state, setState] = useContext(ClockContext);
 
     const handleCitationChange = () => {
-
       setState({
         ...state,
         randomCitation: !state.randomCitation,
