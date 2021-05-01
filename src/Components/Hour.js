@@ -76,13 +76,46 @@ grid-template-areas:
 
 const Hour = () => {
 
-
     const [state, setState] = useContext(ClockContext);
+
+    const [time, setTime] = useState({
+        hour: null,
+        minute:null,
+    })
+
+    const changeTime = () => {
+        let time = new Date()
+        let hour = time.getHours();
+        let minute = time.getMinutes();
+        setTime({
+            hour: hour,
+            minute:minute,
+        })
+
+        if (6<hour && hour<20) {
+            setState({
+                ...state,
+                isNight: false,
+            })
+        }
+    }
+
+    // const changeTimeOfDay = () => {
+    //     if()
+    // }
+
+    useEffect(() => {
+        setInterval(changeTime,1000)
+    }, [])
 
     return(
         <HourWrapper>
             <h3 className="greet-text">GOOD MORNING</h3>
-            <span className="time"></span>
+            <span className="time">
+                {time.hour<10? `0${time.hour}`:`${time.hour}`}:
+                {time.minute<10? `0${time.minute}`:`${time.minute}`}
+                
+            </span>
             <h3 className="bst">BST</h3>
             <h3 className="city">IN {state.country}, {state.countryCode}</h3>
         </HourWrapper>
