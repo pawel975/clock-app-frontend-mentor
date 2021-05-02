@@ -1,9 +1,10 @@
+
 // packages
-import { useContext } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios'
 // img, svg
 import RefreshCitation from '../assets/desktop/icon-refresh.svg';
-import { ClockContext } from './ClockContext';
 
 const CitationWrapper = styled.div`
   margin:auto;
@@ -38,14 +39,32 @@ const CitationWrapper = styled.div`
 
 const Citation = () => {
 
-    const [state, setState] = useContext(ClockContext);
+    const [state, setState] = useState({
+      quoteText: "",
+      quoteAuthor: "",
+    });
+
+    const fetchData = () => {
+      const URLQuote = `https://my-cors-proxy-975.herokuapp.com/https://type.fit/api/quotes`;
+  
+      axios.get(URLQuote).then(quote=> {
+          const index = Math.floor(Math.random()*quote.data.length);
+          setState({
+            ...state,
+            quoteText: quote.data[index].text,
+            quoteAuthor: quote.data[index].author,
+          })
+        }
+      )
+    }
 
     const handleCitationChange = () => {
-      setState({
-        ...state,
-        randomCitation: !state.randomCitation,
-      })
+      fetchData()
     }
+
+    useEffect(() => {
+      handleCitationChange()
+    }, [])
 
     return(
         <CitationWrapper>

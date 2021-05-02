@@ -5,12 +5,17 @@ export const ClockContext = createContext();
 export const ClockProvider = props => {
 
     const [state, setState] = useState({
-        isNight:true,
-        randomCitation: false,
-        quoteText: "",
-        quoteAuthor: "",
+        isNight:false,
+        // randomCitation: false,
+        // quoteText: "",
+        // quoteAuthor: "",
         country: "",
         countryCode: "",
+        timeZone: "",
+        dayOfTheYear: null,
+        dayOfTheWeek: null,
+        weekNumber: null,
+
     })
 
     return(

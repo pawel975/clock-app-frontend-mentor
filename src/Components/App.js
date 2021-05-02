@@ -85,23 +85,23 @@ function App() {
 
   const fetchData = () => {
     const URLGeo =  `https://freegeoip.app/json/`;
-    const URLQuote = `https://type.fit/api/quotes`;
+    const URLTime = `http://worldtimeapi.org/api/ip`;
 
     const getGeo = axios.get(URLGeo);
-    const getQuote = axios.get(URLQuote);
+    const getTime = axios.get(URLTime);
 
-    console.log(getGeo,URLQuote)
-
-    axios.all([getGeo,getQuote]).then(
+    console.log(getTime)
+    axios.all([getGeo,getTime]).then(
       axios.spread((...allData)=> {
-        const index = Math.floor(Math.random()*allData[1].data.length);
 
         setState({
           ...state,
+          timeZone: allData[0].data.time_zone,
           country: allData[0].data.country_name,
           countryCode: allData[0].data.country_code,
-          quoteText: allData[1].data[index].text,
-          quoteAuthor: allData[1].data[index].author
+          dayOfTheYear: allData[1].data.day_of_year,
+          dayOfTheWeek: allData[1].data.day_of_week,
+          weekNumber: allData[1].data.week_number,
         })
       })
     )
@@ -109,8 +109,7 @@ function App() {
 
   useEffect(() => {
     fetchData()
-    console.log(state)
-  }, [state.randomCitation])
+  }, [])
 
 
   const backgroundStyling = {

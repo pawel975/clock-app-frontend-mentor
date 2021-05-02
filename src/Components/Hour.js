@@ -103,12 +103,10 @@ const Hour = () => {
         //         isNight:true,
         //     })
         // }
-
-        console.log(state)
     }
 
     useEffect(() => {
-        setInterval(changeTime,1000)
+        setInterval(changeTime,1000);
     }, [])
 
     return(

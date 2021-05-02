@@ -42,24 +42,25 @@ const Details = () => {
 
     const [state, setState] = useContext(ClockContext);
 
+    const {timeZone,dayOfTheYear,dayOfTheWeek,weekNumber} = state;
 
     return(
         <DetailsWrapper>
             <section>
                 <div className="timezone">CURRENT TIMEZONE</div>
-                <span>Europe/London</span>
+                <span>{timeZone}</span>
             </section>
             <section>
                 <div className="day-of-the-year">DAY OF THE YEAR</div>
-                <span>295</span>
+                <span>{dayOfTheYear}</span>
             </section>
             <section>
                 <div className="day-of-the-week">DAY OF THE WEEK</div>
-                <span>5</span>
+                <span>{dayOfTheWeek}</span>
             </section>
             <section>
                 <div className="week-number">WEEK NUMBER</div>
-                <span>42</span>
+                <span>{weekNumber}</span>
             </section>
         </DetailsWrapper>
     )
