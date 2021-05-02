@@ -1,9 +1,10 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 // packages
 import styled from 'styled-components';
 // img, svg
 import Sun from '../assets/desktop/icon-sun.svg';
-import { ClockContext } from './ClockContext';
+import Moon from '../assets/desktop/icon-moon.svg';
+import { ClockContext, TimeContext } from './ClockContext';
 
 const HourWrapper = styled.div`
 * {
@@ -14,13 +15,18 @@ width:85%;
 /* outline:2px solid green; */
 display:grid;
 height:185px;
-grid-template-columns: 87% 1fr;
+grid-template-columns: 93% 1fr;
 grid-template-rows: 30px 60% 1fr;
 grid-template-areas:
 "greet-text greet-text"
 "time bst"
 "city city"
 ;
+
+@media (min-width:700px) {
+    width:70%;
+    outline:2px solid green;
+}
 
 .greet-text {
     grid-area: greet-text;
@@ -33,12 +39,17 @@ grid-template-areas:
     display:flex;
     align-items:center;
 
-    &:before {
+    @media (min-width:700px) {
+        font-size:18px;
+        line-height:28px;
+        letter-spacing:3.6px;
+    }
+
+    img {
         margin:auto 0;  
-        margin-right:1em;
+        margin-right:0.8em;
         height:24px; 
         /* outline:2px solid green; */
-        content: url(${Sun});
     }
 }
 
@@ -47,10 +58,16 @@ grid-template-areas:
     /* outline:2px solid green; */
     font-size:100px;
     color:#FFFFFF;
-    font-weight:900;
+    font-weight:700;
     line-height:100px;
     letter-spacing:-2.5px;
     align-self:end;
+
+    @media (min-width:700px) {
+        font-size:175px;
+        line-height:175px;
+        letter-spacing:-4.38px;
+    }
 }
 
 .bst {
@@ -78,10 +95,7 @@ const Hour = () => {
 
     const [state, setState] = useContext(ClockContext);
 
-    const [timeState, setTimeState] = useState({
-        hour: null,
-        minute:null,
-    })
+    const [timeState, setTimeState] = useContext(TimeContext);
 
     const changeTime = () => {
         let time = new Date()
@@ -91,44 +105,35 @@ const Hour = () => {
             hour: hour,
             minute:minute,
         })
-
-        // if (6<hour && hour<20) {
-        //     if(hour!==timeState.hour) {
-        //         console.log("day", timeState.hour)
-        //         console.log(state.isNight)
-        //         setState({
-        //             ...state,
-        //             isNight: true,
-        //         })
-        //     }
-        // } else if(6>hour && hour>20) {
-        //     if(hour!==timeState.hour) {
-        //         console.log("night", timeState.hour)
-        //         console.log(state.isNight)
-        //         setState({
-        //             ...state,
-        //             isNight: false,
-        //         })
-        //     }
-        // }
-
     }
 
+    const changeGreet = () => {
+        if(timeState.hour > 6 && timeState.hour < 19) {
+          setState({...state, isNight: false,})
+        } else {
+          setState({...state, isNight: true,})
+        }
+      }
+
     useEffect(() => {
-        console.log("render hour component")
         setInterval(changeTime,1000);
+        changeGreet();
     }, [])
 
+    const {isNight, abbreviation,country,countryCode} = state;
+    const {hour,minute} = timeState;
+
     return(
+
         <HourWrapper>
-            <h3 className="greet-text">GOOD MORNING</h3>
+            <h3 className="greet-text"><img src={isNight? Sun:Moon} alt="Sun"/>GOOD {isNight? "MORNING" : "EVENING"}</h3>
             <span className="time">
-                {timeState.hour<10? `0${timeState.hour}`:`${timeState.hour}`}:
-                {timeState.minute<10? `0${timeState.minute}`:`${timeState.minute}`}
+                {hour<10? `0${hour}`:`${hour}`}:
+                {minute<10? `0${minute}`:`${minute}`}
                 
             </span>
-            <h3 className="bst">{state.abbreviation}</h3>
-            <h3 className="city">IN {state.country}, {state.countryCode}</h3>
+            <h3 className="bst">{abbreviation}</h3>
+            <h3 className="city">{country===undefined? "LOADING..." : `IN ${country}, ${countryCode}`}</h3>
         </HourWrapper>
     )
 }

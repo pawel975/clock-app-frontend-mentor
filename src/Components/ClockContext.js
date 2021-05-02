@@ -5,7 +5,7 @@ export const ClockContext = createContext();
 export const ClockProvider = props => {
 
     const [state, setState] = useState({
-        isNight:false,
+        isNight:null,
         country: "",
         countryCode: "",
         timeZone: "",
@@ -20,4 +20,18 @@ export const ClockProvider = props => {
             {props.children}
         </ClockContext.Provider>
     )
+}
+
+export const TimeContext = createContext();
+
+export const TimeProvider = props => {
+
+    const [timeState, setTimeState] = useState({
+        hour: null,
+        minute:null,
+    })
+
+    return <TimeContext.Provider value={[timeState,setTimeState]}>
+        {props.children}
+    </TimeContext.Provider>
 }

@@ -13,6 +13,13 @@ const CitationWrapper = styled.div`
   position:relative;
   width:87%;
   height:fit-content;
+
+  @media (min-width:700px) {
+    left:-2em;
+    width:75%;
+    margin-top:3em;
+    outline:green 2px solid;
+  }
     
   img {
     position:absolute;
@@ -27,6 +34,13 @@ const CitationWrapper = styled.div`
     color:#FFFFFF;
     font-size:12px;
     line-height:22px;
+
+    @media (min-width: 700px) {
+      /* outline:3px solid red; */
+      font-size:18px;
+      line-height:28px;
+      font-weight:400;
+    }
     }
   
   .citation-author {
@@ -34,6 +48,12 @@ const CitationWrapper = styled.div`
     color:#FFFFFF;
     font-size:12px;
     line-height:22px;
+
+    @media (min-width: 700px) {
+      font-size:18px;
+      line-height:28px;
+      font-weight:400;
+    }
   }
 `
 

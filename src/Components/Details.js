@@ -8,6 +8,7 @@ const DetailsWrapper = styled.div`
 
 background: rgba(255, 255, 255, 0.75);
 backdrop-filter: blur(40.7742px);
+opacity:0.98;
 width:100vw;
 height:39%;
 display:flex;
@@ -34,36 +35,43 @@ section {
         color:#303030;
     }
 }
-
-
 `
 
 const Details = () => {
 
     const [state, setState] = useContext(ClockContext);
 
-    const {timeZone,dayOfTheYear,dayOfTheWeek,weekNumber} = state;
+    const {country,timeZone,dayOfTheYear,dayOfTheWeek,weekNumber} = state;
+
+    const darkModeStyling = {
+        color:"white",
+        background: "rgba(0, 0, 0, 0.75)",
+    }
+
+    const darkModeSpan = {color:"white"}
 
     return(
-        <DetailsWrapper>
+        <DetailsWrapper style={!state.isNight && darkModeStyling}>
             <section>
                 <div className="timezone">CURRENT TIMEZONE</div>
-                <span>{timeZone}</span>
+                <span style={!state.isNight? darkModeSpan:null}>{country===undefined? "LOADING..." : `${timeZone}`}</span>
             </section>
             <section>
                 <div className="day-of-the-year">DAY OF THE YEAR</div>
-                <span>{dayOfTheYear}</span>
+                <span style={!state.isNight? darkModeSpan:null}>{country===undefined? "LOADING..." : `${dayOfTheYear}`}</span>
             </section>
             <section>
                 <div className="day-of-the-week">DAY OF THE WEEK</div>
-                <span>{dayOfTheWeek}</span>
+                <span style={!state.isNight? darkModeSpan:null}>{country===undefined? "LOADING..." : `${dayOfTheWeek}`}</span>
             </section>
             <section>
                 <div className="week-number">WEEK NUMBER</div>
-                <span>{weekNumber}</span>
+                <span style={!state.isNight? darkModeSpan:null}>{country===undefined? "LOADING..." : `${weekNumber}`}</span>
             </section>
         </DetailsWrapper>
     )
 }
 
 export default Details;
+// style={{background: 
+//     `${ state.isNight ?"rgba(255, 255, 255, 0.75)" : "rgba(0,0,0,0.75)" }` }}
