@@ -15,9 +15,7 @@ import ArrowUpMobile from '../assets/mobile/icon-arrow-up-mobile.svg';
 
 
 const AppWrapper = styled.div`
-position:relative;
-width:100vw;
-height:100vh;
+
 
 &:after {
   position:absolute;
@@ -102,12 +100,14 @@ function App() {
           dayOfTheYear: allData[1].data.day_of_year,
           dayOfTheWeek: allData[1].data.day_of_week,
           weekNumber: allData[1].data.week_number,
+          abbreviation: allData[1].data.abbreviation,
         })
       })
     )
   }
 
   useEffect(() => {
+    console.log("render whole app");
     fetchData()
   }, [])
 
@@ -115,6 +115,9 @@ function App() {
   const backgroundStyling = {
     background: `url(${state.isNight? BackgroundMobileNightTime: BackgroundMobileDayTime})`,
     backgroundSize:"cover",
+    position:"relative",
+    width:"100vw",
+    height:"100vh",
   }
 
   return (

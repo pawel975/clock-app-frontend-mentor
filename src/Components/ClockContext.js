@@ -6,9 +6,6 @@ export const ClockProvider = props => {
 
     const [state, setState] = useState({
         isNight:false,
-        // randomCitation: false,
-        // quoteText: "",
-        // quoteAuthor: "",
         country: "",
         countryCode: "",
         timeZone: "",

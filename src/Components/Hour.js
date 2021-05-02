@@ -78,7 +78,7 @@ const Hour = () => {
 
     const [state, setState] = useContext(ClockContext);
 
-    const [time, setTime] = useState({
+    const [timeState, setTimeState] = useState({
         hour: null,
         minute:null,
     })
@@ -87,25 +87,35 @@ const Hour = () => {
         let time = new Date()
         let hour = time.getHours();
         let minute = time.getMinutes();
-        setTime({
+        setTimeState({
             hour: hour,
             minute:minute,
         })
 
         // if (6<hour && hour<20) {
-        //     setState({
-        //         ...state,
-        //         isNight: false,
-        //     })
-        // } else {
-        //     setState({
-        //         ...state,
-        //         isNight:true,
-        //     })
+        //     if(hour!==timeState.hour) {
+        //         console.log("day", timeState.hour)
+        //         console.log(state.isNight)
+        //         setState({
+        //             ...state,
+        //             isNight: true,
+        //         })
+        //     }
+        // } else if(6>hour && hour>20) {
+        //     if(hour!==timeState.hour) {
+        //         console.log("night", timeState.hour)
+        //         console.log(state.isNight)
+        //         setState({
+        //             ...state,
+        //             isNight: false,
+        //         })
+        //     }
         // }
+
     }
 
     useEffect(() => {
+        console.log("render hour component")
         setInterval(changeTime,1000);
     }, [])
 
@@ -113,11 +123,11 @@ const Hour = () => {
         <HourWrapper>
             <h3 className="greet-text">GOOD MORNING</h3>
             <span className="time">
-                {time.hour<10? `0${time.hour}`:`${time.hour}`}:
-                {time.minute<10? `0${time.minute}`:`${time.minute}`}
+                {timeState.hour<10? `0${timeState.hour}`:`${timeState.hour}`}:
+                {timeState.minute<10? `0${timeState.minute}`:`${timeState.minute}`}
                 
             </span>
-            <h3 className="bst">BST</h3>
+            <h3 className="bst">{state.abbreviation}</h3>
             <h3 className="city">IN {state.country}, {state.countryCode}</h3>
         </HourWrapper>
     )
