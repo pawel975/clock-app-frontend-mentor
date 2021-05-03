@@ -1,12 +1,12 @@
-import React,{useState,createContext} from 'react';
+import React,{useState, createContext} from 'react';
 
 export const ClockContext = createContext();
+export const ToggleThemeContext = createContext()
 
 export const ClockProvider = props => {
 
     const [state, setState] = useState({
-        isNight:null,
-        country: "",
+        city: "",
         countryCode: "",
         timeZone: "",
         dayOfTheYear: null,
@@ -15,23 +15,13 @@ export const ClockProvider = props => {
 
     })
 
+    const [theme, setTheme] = useState("light");
+
     return(
         <ClockContext.Provider value={[state, setState]}>
-            {props.children}
+            <ToggleThemeContext.Provider value={[theme, setTheme]}>
+                {props.children}
+            </ToggleThemeContext.Provider>
         </ClockContext.Provider>
     )
-}
-
-export const TimeContext = createContext();
-
-export const TimeProvider = props => {
-
-    const [timeState, setTimeState] = useState({
-        hour: null,
-        minute:null,
-    })
-
-    return <TimeContext.Provider value={[timeState,setTimeState]}>
-        {props.children}
-    </TimeContext.Provider>
 }

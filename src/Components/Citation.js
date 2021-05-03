@@ -18,7 +18,7 @@ const CitationWrapper = styled.div`
     left:-2em;
     width:75%;
     margin-top:3em;
-    outline:green 2px solid;
+    /* outline:green 2px solid; */
   }
     
   img {

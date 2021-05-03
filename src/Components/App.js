@@ -1,8 +1,10 @@
-import React, {useState,useEffect, useContext,useRef} from 'react';
+import React, {useState,useEffect, useContext} from 'react';
 // packages
+import Loader from 'react-loader-spinner';
 import styled from 'styled-components';
+import {ThemeProvider} from 'styled-components';
 import axios from 'axios';
-import { ClockContext,TimeContext} from './ClockContext';
+import { ClockContext, ToggleThemeContext} from './ClockContext';
 // components
 import Citation from './Citation';
 import Hour from './Hour';
@@ -17,13 +19,38 @@ import BackgroundDesktopNightTime from '../assets/desktop/bg-image-nighttime.jpg
 import ArrowUpMobile from '../assets/mobile/icon-arrow-up-mobile.svg';
 import ArrowUpDesktop from '../assets/desktop/icon-arrow-up.svg';
 
+const LightTheme = {
+  imgMobile: BackgroundMobileDayTime,
+  imgTablet: BackgroundTabletDayTime,
+  imgDesktop: BackgroundDesktopDayTime,
+  fontColor: "#303030",
+  backgroundColor: "rgba(255, 255, 255, 0.75)",
+}
 
+const DarkTheme = {
+  imgMobile: BackgroundMobileNightTime,
+  imgTablet: BackgroundTabletNightTime,
+  imgDesktop: BackgroundDesktopNightTime,
+  fontColor: "white",
+  backgroundColor: "rgba(0, 0, 0, 0.75)",
+}
+
+const themes = {
+  light: LightTheme,
+  dark: DarkTheme,
+}
 
 const AppWrapper = styled.div`
-    /* background-size:400px 200px; */
+    background: url(${props=> props.theme.imgMobile});
+    background-size:cover;
     position:relative;
     width:100vw;
     height:100vh;
+
+    @media (min-width: 700px) {
+      background: url(${props=> props.theme.imgTablet});
+      background-size:cover;
+    }
 
 &:after {
   position:absolute;
@@ -33,6 +60,13 @@ const AppWrapper = styled.div`
   background:black;
   opacity:0.4;
 } 
+
+.loading {
+  position:absolute;
+  transform:translate(-50%,-50%);
+  left:50%;
+  top:50%;
+}
 
 .app {
   width:100%;
@@ -66,6 +100,7 @@ const AppWrapper = styled.div`
     letter-spacing:3.75px;
 
     @media (min-width:700px) {
+      margin-left:4em;
       font-size:16px;
       line-height:28px;
       letter-spacing:5px;
@@ -99,9 +134,8 @@ function App() {
 
 
   const [detailsOpen, setDetailsOpen] = useState(false);
-
-  const [state,setState] = useContext(ClockContext);
-  const [timeState, setTimeState] = useContext(TimeContext);
+  const [state, setState] = useContext(ClockContext);
+  const [theme, setTheme] = useContext(ToggleThemeContext);
 
   const handleDetailOpen = () => {
     setDetailsOpen(!detailsOpen);
@@ -109,7 +143,7 @@ function App() {
 
   const fetchData = () => {
     const URLGeo =  `https://freegeoip.app/json/`;
-    const URLTime = `https://my-cors-proxy-975.herokuapp.com/http://worldtimeapi.org/api/ip`;
+    const URLTime = `http://worldtimeapi.org/api/ip`;
 
     const getGeo = axios.get(URLGeo);
     const getTime = axios.get(URLTime);
@@ -121,7 +155,7 @@ function App() {
         setState({
           ...state,
           timeZone: allData[0].data.time_zone,
-          country: allData[0].data.country_name,
+          city: allData[0].data.city,
           countryCode: allData[0].data.country_code,
           dayOfTheYear: allData[1].data.day_of_year,
           dayOfTheWeek: allData[1].data.day_of_week,
@@ -132,39 +166,15 @@ function App() {
     )
   }
 
-  const windowSizeBackgroundChangeDay = () => {
-    const size = window.innerWidth;
-    if (size<700) {
-      return BackgroundMobileDayTime
-    } else if (size >= 700 && size <1280) {
-      return BackgroundTabletDayTime
-    } else {
-      return BackgroundDesktopDayTime
-    }
-  }
-  const windowSizeBackgroundChangeNight = () => {
-    const size = window.innerWidth;
-    if (size<700) {
-      return BackgroundMobileNightTime
-    } else if (size >= 700 && size <1280) {
-      return BackgroundTabletNightTime
-    } else {
-      return BackgroundDesktopNightTime
-    }
-  }
-
-  const backgroundRef = useRef()
-
   const changeBackground = () => {
-    if(timeState.hour > 6 && timeState.hour < 19) {
-      setState({...state, isNight: false,})
-      backgroundRef.current.style.background = `url(${windowSizeBackgroundChangeDay()})`
-      backgroundRef.current.style.backgroundSize = "cover"
-    } else {
-      setState({...state, isNight: true,})
-      backgroundRef.current.style.background =`url(${windowSizeBackgroundChangeNight()})`
-      backgroundRef.current.style.backgroundSize = "cover"
-    }
+    const currentHours = new Date().getHours()
+    if(currentHours > 6) { 
+      if (currentHours < 19) {
+        setTheme("light")
+      } else {
+        setTheme("dark")
+      }
+      }
   }
 
   useEffect(() => {
@@ -174,14 +184,21 @@ function App() {
   }, [])
 
   return (
-      <AppWrapper ref={backgroundRef}>
+    <ThemeProvider theme={themes[theme]}>
+      <AppWrapper>
+        {state.city===""? 
+        <Loader className="loading" type="Oval" color="#FFFFFF" height={120} width={120} /> 
+        :
         <div className="app">
           {!detailsOpen && <Citation/>}
           <Hour/>
           <button onClick={handleDetailOpen}>{detailsOpen?"LESS":"MORE"}</button>
           {detailsOpen && <Details/>}
         </div>
+        }
+
       </AppWrapper>
+    </ThemeProvider>
   );
 }
 

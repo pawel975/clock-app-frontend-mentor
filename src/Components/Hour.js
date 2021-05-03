@@ -1,20 +1,20 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext,useState, useEffect} from 'react';
 // packages
 import styled from 'styled-components';
 // img, svg
 import Sun from '../assets/desktop/icon-sun.svg';
 import Moon from '../assets/desktop/icon-moon.svg';
-import { ClockContext, TimeContext } from './ClockContext';
+import { ClockContext, ToggleThemeContext } from './ClockContext';
 
 const HourWrapper = styled.div`
 * {
 margin:0;
 }
 margin:1.5em;
-width:85%;
-/* outline:2px solid green; */
+margin-right:auto;
+width:auto;
 display:grid;
-height:185px;
+min-height:185px;
 grid-template-columns: 93% 1fr;
 grid-template-rows: 30px 60% 1fr;
 grid-template-areas:
@@ -24,8 +24,9 @@ grid-template-areas:
 ;
 
 @media (min-width:700px) {
-    width:70%;
-    outline:2px solid green;
+    margin-left:4em;
+    height:300px;
+    /* outline:2px solid green; */
 }
 
 .greet-text {
@@ -79,6 +80,12 @@ grid-template-areas:
     font-weight:300;
     /* outline:2px solid green; */
     align-self:end;
+
+    @media (min-width:700px) {
+        font-size:32px;
+        line-height:28px;
+        letter-spacing:3.6px;
+    }
 }
 
 .city {
@@ -88,14 +95,25 @@ grid-template-areas:
     color:#FFFFFF;
     font-weight:700;
     letter-spacing:3px;
+
+    @media (min-width:700px) {
+        align-self:flex-start;
+        font-size:18px;
+        line-height:28px;
+        letter-spacing:3.6px;
+    }
 }
 `
 
 const Hour = () => {
 
-    const [state, setState] = useContext(ClockContext);
+    const [state] = useContext(ClockContext);
+    const [theme] = useContext(ToggleThemeContext);
 
-    const [timeState, setTimeState] = useContext(TimeContext);
+    const [timeState, setTimeState] = useState({
+        hour: 0,
+        minute:0,
+    })
 
     const changeTime = () => {
         let time = new Date()
@@ -107,33 +125,24 @@ const Hour = () => {
         })
     }
 
-    const changeGreet = () => {
-        if(timeState.hour > 6 && timeState.hour < 19) {
-          setState({...state, isNight: false,})
-        } else {
-          setState({...state, isNight: true,})
-        }
-      }
-
     useEffect(() => {
         setInterval(changeTime,1000);
-        changeGreet();
     }, [])
 
-    const {isNight, abbreviation,country,countryCode} = state;
+    const {abbreviation,countryCode,city} = state;
     const {hour,minute} = timeState;
 
     return(
 
         <HourWrapper>
-            <h3 className="greet-text"><img src={isNight? Sun:Moon} alt="Sun"/>GOOD {isNight? "MORNING" : "EVENING"}</h3>
+            <h3 className="greet-text"><img src={theme==="light"? Sun:Moon} alt="Sun"/>GOOD {theme ==="light"? "MORNING" : "EVENING"}</h3>
             <span className="time">
                 {hour<10? `0${hour}`:`${hour}`}:
                 {minute<10? `0${minute}`:`${minute}`}
                 
             </span>
             <h3 className="bst">{abbreviation}</h3>
-            <h3 className="city">{country===undefined? "LOADING..." : `IN ${country}, ${countryCode}`}</h3>
+            <h3 className="city">{city===undefined? "LOADING..." : `IN ${city}, ${countryCode}`.toUpperCase()}</h3>
         </HourWrapper>
     )
 }

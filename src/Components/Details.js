@@ -6,7 +6,7 @@ import { ClockContext } from './ClockContext';
 
 const DetailsWrapper = styled.div`
 
-background: rgba(255, 255, 255, 0.75);
+background: ${props => props.theme.backgroundColor} ;
 backdrop-filter: blur(40.7742px);
 opacity:0.98;
 width:100vw;
@@ -14,6 +14,7 @@ height:39%;
 display:flex;
 flex-direction:column;
 justify-content:center;
+color:${props=> props.theme.fontColor};
 
 section {
     display:flex;
@@ -32,7 +33,6 @@ section {
         font-size:20px;
         line-height:28px;
         font-weight:bolder;
-        color:#303030;
     }
 }
 `
@@ -41,32 +41,25 @@ const Details = () => {
 
     const [state, setState] = useContext(ClockContext);
 
-    const {country,timeZone,dayOfTheYear,dayOfTheWeek,weekNumber} = state;
-
-    const darkModeStyling = {
-        color:"white",
-        background: "rgba(0, 0, 0, 0.75)",
-    }
-
-    const darkModeSpan = {color:"white"}
+    const {city,timeZone,dayOfTheYear,dayOfTheWeek,weekNumber} = state;
 
     return(
-        <DetailsWrapper style={!state.isNight && darkModeStyling}>
+        <DetailsWrapper>
             <section>
                 <div className="timezone">CURRENT TIMEZONE</div>
-                <span style={!state.isNight? darkModeSpan:null}>{country===undefined? "LOADING..." : `${timeZone}`}</span>
+                <span>{city===undefined? "LOADING..." : `${timeZone}`}</span>
             </section>
             <section>
                 <div className="day-of-the-year">DAY OF THE YEAR</div>
-                <span style={!state.isNight? darkModeSpan:null}>{country===undefined? "LOADING..." : `${dayOfTheYear}`}</span>
+                <span>{city===undefined? "LOADING..." : `${dayOfTheYear}`}</span>
             </section>
             <section>
                 <div className="day-of-the-week">DAY OF THE WEEK</div>
-                <span style={!state.isNight? darkModeSpan:null}>{country===undefined? "LOADING..." : `${dayOfTheWeek}`}</span>
+                <span>{city===undefined? "LOADING..." : `${dayOfTheWeek}`}</span>
             </section>
             <section>
                 <div className="week-number">WEEK NUMBER</div>
-                <span style={!state.isNight? darkModeSpan:null}>{country===undefined? "LOADING..." : `${weekNumber}`}</span>
+                <span>{city===undefined? "LOADING..." : `${weekNumber}`}</span>
             </section>
         </DetailsWrapper>
     )
