@@ -17,6 +17,8 @@ justify-content:center;
 color:${props=> props.theme.fontColor};
 
 @media (min-width:700px) {
+    height:30%;
+    padding:50px 0;
     align-items:center;
     /* outline:2px solid green; */
     display:grid;
