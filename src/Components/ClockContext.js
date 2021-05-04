@@ -12,6 +12,7 @@ export const ClockProvider = props => {
         dayOfTheYear: null,
         dayOfTheWeek: null,
         weekNumber: null,
+        abbreviation: "",
 
     })
 

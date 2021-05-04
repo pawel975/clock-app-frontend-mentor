@@ -59,13 +59,29 @@ const AppWrapper = styled.div`
   height:100vh;
   background:black;
   opacity:0.4;
-} 
+}
 
 .loading {
+  z-index:1;
   position:absolute;
   transform:translate(-50%,-50%);
   left:50%;
   top:50%;
+}
+
+.error {
+  left:50%;
+  transform:translate(-50%,-50%);
+  top:50%;
+  text-align:center;
+  z-index:1;
+  font-size:30px;
+  position:absolute;
+  color:white;
+
+  @media (min-width: 700px) {
+    font-size:70px;
+  }
 }
 
 .app {
@@ -136,6 +152,8 @@ function App() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [state, setState] = useContext(ClockContext);
   const [theme, setTheme] = useContext(ToggleThemeContext);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [dataError, setDataError] = useState(false);
 
   const handleDetailOpen = () => {
     setDetailsOpen(!detailsOpen);
@@ -148,22 +166,27 @@ function App() {
     const getGeo = axios.get(URLGeo);
     const getTime = axios.get(URLTime);
 
-    console.log(getTime)
     axios.all([getGeo,getTime]).then(
       axios.spread((...allData)=> {
-
-        setState({
-          ...state,
-          timeZone: allData[0].data.time_zone,
-          city: allData[0].data.city,
-          countryCode: allData[0].data.country_code,
-          dayOfTheYear: allData[1].data.day_of_year,
-          dayOfTheWeek: allData[1].data.day_of_week,
-          weekNumber: allData[1].data.week_number,
-          abbreviation: allData[1].data.abbreviation,
-        })
+          setState({
+            ...state,
+            timeZone: allData[0].data.time_zone,
+            city: allData[0].data.city,
+            countryCode: allData[0].data.country_code,
+            dayOfTheYear: allData[1].data.day_of_year,
+            dayOfTheWeek: allData[1].data.day_of_week,
+            weekNumber: allData[1].data.week_number,
+            abbreviation: allData[1].data.abbreviation,
+          })
+          setDataLoaded(true)
+          setDataError(false)
       })
     )
+    .catch((error)=>{
+      console.log(error)
+      setDataLoaded(false)
+      setDataError(true)
+    }) 
   }
 
   const changeBackground = () => {
@@ -176,30 +199,34 @@ function App() {
       }
       }
   }
-
+ 
   useEffect(() => {
     changeBackground();
-    fetchData()
+    fetchData();
     return setState({})
   }, [])
 
   return (
     <ThemeProvider theme={themes[theme]}>
       <AppWrapper>
-        {state.city===""? 
-        <Loader className="loading" type="Oval" color="#FFFFFF" height={120} width={120} /> 
-        :
-        <div className="app">
-          {!detailsOpen && <Citation/>}
-          <Hour/>
-          <button onClick={handleDetailOpen}>{detailsOpen?"LESS":"MORE"}</button>
-          {detailsOpen && <Details/>}
-        </div>
-        }
-
+        {   
+        dataError ? 
+            <div className="error">Something went wrong... refresh the page</div>
+          :
+            dataLoaded? 
+            <div className="app">
+              {!detailsOpen && <Citation/>}
+              <Hour/>
+              <button onClick={handleDetailOpen}>{detailsOpen?"LESS":"MORE"}</button>
+              {detailsOpen && <Details/>}
+              </div>
+                :        
+              <Loader className="loading" type="Oval" color="#FFFFFF" height={150} width={150} />
+          }
       </AppWrapper>
     </ThemeProvider>
   );
 }
 
 export default App;
+

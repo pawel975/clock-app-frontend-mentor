@@ -16,16 +16,39 @@ flex-direction:column;
 justify-content:center;
 color:${props=> props.theme.fontColor};
 
+@media (min-width:700px) {
+    align-items:center;
+    /* outline:2px solid green; */
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+}
+
 section {
     display:flex;
     justify-content:space-between;
     margin:0.5em 1.5em;
+
+    @media (min-width:700px) {
+        /* outline:2px solid red; */
+        align-items:left;
+        height:100px;
+        margin-left:4em;
+        justify-content:center;
+        flex-direction:column;
+    }
 
     div {
         /* outline:2px solid green; */
         font-size:10px;
         line-height:28px;
         letter-spacing:2px;
+
+        @media (min-width:700px) {
+            font-size:13px;
+            line-height:40px;
+            letter-spacing:2.6px;
+        }
     }
 
     span {
@@ -33,13 +56,19 @@ section {
         font-size:20px;
         line-height:28px;
         font-weight:bolder;
+
+        @media (min-width:700px) {
+            font-size:40px;
+            letter-spacing:0;
+            line-height:auto;
+        }
     }
 }
 `
 
 const Details = () => {
 
-    const [state, setState] = useContext(ClockContext);
+    const [state] = useContext(ClockContext);
 
     const {city,timeZone,dayOfTheYear,dayOfTheWeek,weekNumber} = state;
 
