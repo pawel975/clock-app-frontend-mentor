@@ -29,6 +29,13 @@ grid-template-areas:
     /* outline:2px solid green; */
 }
 
+@media (min-width:1280px) {
+    margin-bottom:-5em;
+    margin-left:8em;
+    height:330px;
+    /* outline:2px solid green; */
+}
+
 .greet-text {
     grid-area: greet-text;
     /* outline:2px solid green; */
@@ -44,6 +51,12 @@ grid-template-areas:
         font-size:18px;
         line-height:28px;
         letter-spacing:3.6px;
+    }
+
+    @media (min-width:1280px) {
+        font-size:20px;
+        line-height:28px;
+        letter-spacing:4px;
     }
 
     img {
@@ -69,6 +82,12 @@ grid-template-areas:
         line-height:175px;
         letter-spacing:-4.38px;
     }
+
+    @media (min-width:1280px) {
+        font-size:200px;
+        line-height:200px;
+        letter-spacing:-5px;
+    }
 }
 
 .bst {
@@ -83,6 +102,14 @@ grid-template-areas:
 
     @media (min-width:700px) {
         font-size:32px;
+        line-height:28px;
+        letter-spacing:3.6px;
+    }
+
+    @media (min-width:1280px) {
+        margin-bottom:0.45em;
+        margin-right:-1em;
+        font-size:40px;
         line-height:28px;
         letter-spacing:3.6px;
     }
@@ -102,7 +129,16 @@ grid-template-areas:
         line-height:28px;
         letter-spacing:3.6px;
     }
+
+    @media (min-width:1280px) {
+        align-self:flex-start;
+        font-size:24px;
+        line-height:28px;
+        letter-spacing:3.6px;
+    }
 }
+
+
 `
 
 const Hour = () => {
@@ -135,7 +171,7 @@ const Hour = () => {
     return(
 
         <HourWrapper>
-            <h3 className="greet-text"><img src={theme==="light"? Sun:Moon} alt="Sun"/>GOOD {theme ==="light"? "MORNING" : "EVENING"}</h3>
+            <h3 className="greet-text"><img src={theme==="light"? Sun:Moon} alt="Sun"/>GOOD {theme ==="light"? "MORNING" : "EVENING"}{window.innerWidth >=700 && ", IT'S CURRENTLY" }</h3>
             <span className="time">
                 {hour<10? `0${hour}`:`${hour}`}:
                 {minute<10? `0${minute}`:`${minute}`}

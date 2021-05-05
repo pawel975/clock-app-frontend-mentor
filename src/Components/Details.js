@@ -26,6 +26,23 @@ color:${props=> props.theme.fontColor};
     grid-template-rows:1fr 1fr;
 }
 
+hr {
+    display:none;
+    @media (min-width:1280px) {
+        display:block;
+    z-index:1;
+    position:absolute;
+    transform:translate(-50%,50%);
+    bottom:47%;
+    border:none;
+    border-left:1px #979797 solid ;
+    left:50%;
+    width:1px;
+    height:80%;
+    /* outline:2px solid red; */
+
+    }
+}
 section {
     display:flex;
     justify-content:space-between;
@@ -76,6 +93,7 @@ const Details = () => {
 
     return(
         <DetailsWrapper>
+            <hr/>
             <section>
                 <div className="timezone">CURRENT TIMEZONE</div>
                 <span>{city===undefined? "LOADING..." : `${timeZone}`}</span>
@@ -97,5 +115,3 @@ const Details = () => {
 }
 
 export default Details;
-// style={{background: 
-//     `${ state.isNight ?"rgba(255, 255, 255, 0.75)" : "rgba(0,0,0,0.75)" }` }}

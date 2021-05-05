@@ -52,6 +52,11 @@ const AppWrapper = styled.div`
       background-size:cover;
     }
 
+    @media (min-width: 1280px) {
+      background: url(${props=> props.theme.imgDesktop});
+      background-size:cover;
+    }
+
 &:after {
   position:absolute;
   content: "";
@@ -81,6 +86,10 @@ const AppWrapper = styled.div`
 
   @media (min-width: 700px) {
     font-size:70px;
+  }
+
+  @media (min-width: 1280px) {
+    font-size:100px;
   }
 }
 
@@ -115,6 +124,10 @@ const AppWrapper = styled.div`
     line-height:14px;
     letter-spacing:3.75px;
 
+    &:hover {
+        opacity:0.8;
+      }
+
     @media (min-width:700px) {
       margin-left:4em;
       font-size:16px;
@@ -125,6 +138,12 @@ const AppWrapper = styled.div`
       border-radius:28px;
     }
 
+    @media (min-width:1280px) {
+      position:relative;
+      left:80%;
+      bottom:3%;
+    }
+
 
     &:after {
       margin-right:3.5px;
@@ -133,12 +152,10 @@ const AppWrapper = styled.div`
       position:relative;
       width:32px;
       height:32px;
-      /* outline:2px solid green; */
 
       @media (min-width:700px) {
         width:40px;
         height:40px;
-        /* outline:2px solid green; */
         margin-right:5px;
         content:url(${ArrowUpDesktop});
       }
@@ -216,7 +233,7 @@ function App() {
             dataLoaded? 
             <div className="app">
               {!detailsOpen && <Citation/>}
-              <Hour/>
+              <Hour detailsOpen={detailsOpen}/>
               <button onClick={handleDetailOpen}>{detailsOpen?"LESS":"MORE"}</button>
               {detailsOpen && <Details/>}
               </div>
